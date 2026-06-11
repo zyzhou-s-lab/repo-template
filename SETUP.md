@@ -2,26 +2,30 @@
 
 基于本模板 **Use this template** 建出新仓库后，按下面四步配置。模板复制了所有文件，但 **不会复制 secrets、variables、仓库设置**——这些必须每个新仓库重配。
 
-## 1. 配置 Secrets（必需）
+## 1. 配置 Secret（必需）
 
 `Settings → Secrets and variables → Actions → Secrets`：
 
 | Secret | 用途 | 必需 |
 |--------|------|------|
-| `MIMO_API_KEY` | 三个 bot 调用 MiMo Anthropic 兼容端点的 key | ✅ 是（不配 bot 全部失败） |
+| `LLM_API_KEY` | 三个 bot 调用 LLM 端点的 key | ✅ 是（不配 bot 全部失败） |
 
 > `GITHUB_TOKEN` 是 Actions 自动注入的，无需手动配。
 
-## 2. 配置 Variables（可选，但建议）
+## 2. 配置 Variables
 
 `Settings → Secrets and variables → Actions → Variables`：
 
-| Variable | 用途 | 默认 |
-|----------|------|------|
-| `BOT_LOGINS` | 被视为"本 bot"的账号登录名（逗号分隔），用于去重/防自触发 | `github-actions[bot]` |
-| `MIMO_BASE_URL` | 覆盖 MiMo 端点 | `https://token-plan-cn.xiaomimimo.com/anthropic` |
+| Variable | 用途 | 必需 | 示例 |
+|----------|------|------|------|
+| `LLM_BASE_URL` | Anthropic 兼容端点 | ✅ 是 | MiMo：`https://token-plan-cn.xiaomimimo.com/anthropic`；官方 Anthropic：`https://api.anthropic.com` |
+| `LLM_MODEL` | 模型名（同时映射 opus/sonnet/haiku 别名） | ✅ 是 | `mimo-v2.5-pro` / `claude-sonnet-4-6` / … |
+| `BOT_LOGINS` | 被视为"本 bot"的账号登录名（逗号分隔），用于去重/防自触发 | 否，默认 `github-actions[bot]` | — |
 
-一般保持默认即可；只有当 bot 评论是以非 `github-actions[bot]` 身份（例如某个 PAT/App）发出时，才需要把那个登录名加进 `BOT_LOGINS`，否则去重失效会导致重复评论。
+> **本模板是 provider 中立的**：换模型 / 换厂商只需改 `LLM_BASE_URL` + `LLM_MODEL` + `LLM_API_KEY` 三个值，不动 workflow 文件。
+> 三者**没有内置默认**——`LLM_BASE_URL` / `LLM_MODEL` 不填，bot 会跑错或报错，这是刻意为之（避免静默指向意料之外的模型）。
+>
+> `BOT_LOGINS`：只有当 bot 评论是以非 `github-actions[bot]` 身份（例如某个 PAT/App）发出时，才需要把那个登录名加进去，否则去重失效会导致重复评论。
 
 ## 3. 打开仓库开关（必需）
 

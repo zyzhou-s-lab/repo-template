@@ -15,7 +15,7 @@
 | `.github/workflows/tests.yml` | PR / push 上跑 `pytest`（前端 job 默认注释掉） |
 | `pyproject.toml` / `src/example_pkg/` / `tests/` | 最小可跑的 Python 占位骨架 |
 
-bot 走 MiMo 的 Anthropic 兼容端点（`mimo-v2.5-pro`），由 `anthropics/claude-code-base-action` 驱动。
+bot 由 `anthropics/claude-code-base-action` 驱动，**provider 中立**：通过 `LLM_BASE_URL` / `LLM_MODEL` / `LLM_API_KEY` 三个仓库级配置指向任意 Anthropic 兼容端点（MiMo、官方 Anthropic、自建网关…），换模型不用动 workflow。
 
 ## 基于本模板建新仓库后，必做清单
 
