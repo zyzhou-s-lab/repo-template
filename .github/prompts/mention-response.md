@@ -122,7 +122,12 @@ Default: if ambiguous, choose `question` (safer).
 *Repo Bot* <!-- reply-to:COMMENT_ID -->
 ```
 
-## Post to GitHub (MANDATORY — always post exactly one reply)
+## Post to GitHub (MANDATORY — you must EXECUTE this, not just write the reply)
+
+Writing your reply as a final message does NOT deliver it. You MUST run the
+command below as an actual Bash tool call — the task is incomplete until
+`gh issue comment` has executed successfully. Substitute your reply for
+YOUR_RESPONSE and run it as your final action:
 
 ```bash
 gh issue comment "$target_number" -R "$repo" --body "YOUR_RESPONSE
