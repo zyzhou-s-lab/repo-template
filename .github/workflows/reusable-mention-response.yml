@@ -21,12 +21,6 @@ jobs:
       issues: write
 
     steps:
-      - name: Fetch shared prompts (repo-template)
-        uses: actions/checkout@v4
-        with:
-          repository: zyzhou-s-lab/repo-template
-          ref: master
-          path: _tpl
       - name: Check user permissions and skip conditions
         id: check_skip
         uses: actions/github-script@v7
@@ -109,6 +103,10 @@ jobs:
         if: steps.check_skip.outputs.should_skip != 'true'
         run: git fetch --all
 
+      - name: Fetch shared prompt (public repo-template)
+        run: |
+          mkdir -p _prompts
+          curl -fsSL "https://raw.githubusercontent.com/zyzhou-s-lab/repo-template/master/.github/prompts/mention-response.md" -o "_prompts/mention-response.md"
       - name: Run mention agent
         if: steps.check_skip.outputs.should_skip != 'true'
         uses: anthropics/claude-code-base-action@v0.0.63
@@ -128,7 +126,7 @@ jobs:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         with:
           anthropic_api_key: ${{ secrets.LLM_API_KEY }}
-          prompt_file: _tpl/.github/prompts/mention-response.md
+          prompt_file: _prompts/mention-response.md
           model: ${{ vars.LLM_MODEL }}
           max_turns: "40"
           timeout_minutes: "15"
