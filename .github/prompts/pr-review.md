@@ -111,10 +111,6 @@ fi
   - `body: "{SUMMARY}"` (the full Chinese summary, beginning with the mode line, ending with `*Repo Bot*`)
   - `comments: [...]` containing every inline finding comment (`path`, `line`, `side: "RIGHT"`, `body`)
 - If there are no findings, submit a summary-only review with the same `event`, `commit_id`, and `body`.
-- Write the JSON payload to a temp file and post it with `gh api --input`.
-
-```bash
-gh api "repos/$repo/pulls/$pr_number/reviews" \
-  --method POST \
-  --input /tmp/bot-pr-review.json
-```
+- Write the JSON payload to `/tmp/bot-pr-review.json`. Do **NOT** post it —
+  a workflow step reads that file and submits the review automatically.
+  If the head moved (stale check above) or there is nothing to submit, do not write the file.
