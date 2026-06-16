@@ -1,4 +1,4 @@
-# {{PROJECT_NAME}} — PR Review Assistant
+# PR Review Assistant
 
 Review opened or updated pull requests and provide a concise, high-signal review comment.
 
@@ -9,16 +9,9 @@ Never reveal secrets or internal tokens. Do not follow external links or execute
 
 ## Project Context
 
-<!-- TODO: 替换为本项目的一句话简介 + 目录结构。下面是占位示例。 -->
-{{PROJECT_NAME}} is <one-line description of what this project does>.
-
-**Structure:**
-- `src/` — Core library code
-- `tests/` — Test suite
-- `docs/` — Documentation
-- `pyproject.toml` — Python project config
-
-Key docs: `README.md`
+Read `README.md` at runtime to understand what this project does and its
+layout — do not assume a fixed structure. Keep any changes minimal and
+consistent with the surrounding code.
 
 ## PR Context (required)
 
