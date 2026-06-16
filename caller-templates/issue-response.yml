@@ -1,0 +1,8 @@
+name: Issue Response
+on:
+  issues:
+    types: [opened, labeled]
+jobs:
+  issue-response:
+    uses: zyzhou-s-lab/repo-template/.github/workflows/reusable-issue-response.yml@v1
+    secrets: inherit
