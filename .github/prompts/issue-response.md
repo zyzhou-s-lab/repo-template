@@ -32,7 +32,7 @@ Exit immediately (post nothing) if any:
 1. Read `README.md` for project context.
 2. Analyze the issue — understand what the user needs.
 3. Research the codebase (Read/Grep/Glob) — find relevant code with evidence.
-4. Respond with accurate information and post it to GitHub.
+4. Respond with accurate information as your final message (the workflow posts it).
 
 ## Response Guidelines
 
@@ -58,13 +58,11 @@ Exit immediately (post nothing) if any:
 *Repo Bot*
 ```
 
-## Post to GitHub (skip conditions take precedence)
+## Output your reply (the workflow posts it — do NOT post it yourself)
 
-If a Skip Condition above is met, exit without posting. Otherwise post exactly one comment. Build the reply body (a temp file is fine for long Chinese text) and post it:
-
-```bash
-gh issue comment "$issue_number" -R "$repo" --body-file /tmp/bot-issue-reply.md
-```
+If a Skip Condition above is met, your entire final message must be exactly: `SKIP`.
+Otherwise your **final message** is the reply comment — do NOT run `gh issue comment`;
+a workflow step posts your final message automatically.
 
 ## Constraints
 
