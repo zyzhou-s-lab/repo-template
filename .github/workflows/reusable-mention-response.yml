@@ -108,6 +108,7 @@ jobs:
           mkdir -p _prompts
           curl -fsSL "https://raw.githubusercontent.com/zyzhou-s-lab/repo-template/master/.github/prompts/mention-response.md" -o "_prompts/mention-response.md"
       - name: Run mention agent
+        id: agent
         if: steps.check_skip.outputs.should_skip != 'true'
         uses: anthropics/claude-code-base-action@v0.0.63
         env:
@@ -131,3 +132,16 @@ jobs:
           max_turns: "40"
           timeout_minutes: "15"
           allowed_tools: "Bash,Read,Grep,Glob,Write"
+
+      - name: Post agent reply
+        if: steps.check_skip.outputs.should_skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          REPLY=$(jq -r '.result // empty' "${{ steps.agent.outputs.execution_file }}")
+          if [ -n "$REPLY" ] && [ "$REPLY" != "SKIP" ]; then
+            printf '%s\n' "$REPLY" | gh issue comment "${{ steps.check_skip.outputs.target_number }}" -R "${{ github.repository }}" --body-file -
+            echo posted
+          else
+            echo 'no reply / SKIP'
+          fi
