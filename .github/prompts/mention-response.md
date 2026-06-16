@@ -70,7 +70,7 @@ Default: if ambiguous, choose `question` (safer).
 ## Phase 3 — Execute
 
 ### `question` / `review`
-- Research thoroughly; answer with `path:line` evidence; post as a comment reply. No code changes.
+- Research thoroughly; answer with `path:line` evidence as your final reply. No code changes.
 
 ### `fix` / `feature`
 1. Branch from the default branch:
@@ -122,19 +122,13 @@ Default: if ambiguous, choose `question` (safer).
 *Repo Bot* <!-- reply-to:COMMENT_ID -->
 ```
 
-## Post to GitHub (MANDATORY — you must EXECUTE this, not just write the reply)
+## Output your reply (the workflow posts it — do NOT post it yourself)
 
-Writing your reply as a final message does NOT deliver it. You MUST run the
-command below as an actual Bash tool call — the task is incomplete until
-`gh issue comment` has executed successfully. Substitute your reply for
-YOUR_RESPONSE and run it as your final action:
+Your **final message** is the reply. Do NOT run `gh issue comment` for the reply —
+a workflow step takes your final message and posts it automatically.
 
-```bash
-gh issue comment "$target_number" -R "$repo" --body "YOUR_RESPONSE
-
----
-*Repo Bot* <!-- reply-to:$comment_id -->"
-```
+- End your reply with this exact marker line: `*Repo Bot* <!-- reply-to:$comment_id -->`
+- If you decide NOT to reply (see Skip Conditions), your entire final message must be exactly: `SKIP`
 
 ## Constraints
 
@@ -144,4 +138,4 @@ gh issue comment "$target_number" -R "$repo" --body "YOUR_RESPONSE
 - **Size limit**: for large changes (>10 files), describe a plan first and ask for confirmation instead of implementing.
 - **No speculation**: only state what you verified in the codebase.
 - **No open-ended offers**: never end with a sales-y offer to produce artifacts (e.g. "需要我帮你生成 Dockerfile / 配置文件吗？" or listing things you could generate). If the intent is clearly `fix`/`feature`, just do it (branch + PR). If the request is ambiguous (e.g. a one-word "部署"), ask exactly one specific clarifying question instead of dangling a menu of deliverables.
-- **Always reply**: end by posting one comment that includes the `<!-- reply-to:$comment_id -->` marker, even for questions/clarifications.
+- **Always reply**: your final message IS the reply (a workflow step posts it) and must include the `<!-- reply-to:$comment_id -->` marker. To skip, output exactly `SKIP`. Never run `gh issue comment` yourself.
