@@ -20,12 +20,6 @@ jobs:
       issues: write
 
     steps:
-      - name: Fetch shared prompts (repo-template)
-        uses: actions/checkout@v4
-        with:
-          repository: zyzhou-s-lab/repo-template
-          ref: master
-          path: _tpl
       - name: Check for existing bot response
         id: check_bot
         uses: actions/github-script@v7
@@ -54,6 +48,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch shared prompt (public repo-template)
+        run: |
+          mkdir -p _prompts
+          curl -fsSL "https://raw.githubusercontent.com/zyzhou-s-lab/repo-template/master/.github/prompts/issue-response.md" -o "_prompts/issue-response.md"
       - name: Run issue-response agent
         if: steps.check_bot.outputs.has_bot != 'true'
         uses: anthropics/claude-code-base-action@v0.0.63
@@ -68,7 +66,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           anthropic_api_key: ${{ secrets.LLM_API_KEY }}
-          prompt_file: _tpl/.github/prompts/issue-response.md
+          prompt_file: _prompts/issue-response.md
           model: ${{ vars.LLM_MODEL }}
           max_turns: "40"
           timeout_minutes: "10"
