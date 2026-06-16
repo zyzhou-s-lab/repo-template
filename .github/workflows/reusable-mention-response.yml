@@ -138,7 +138,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          REPLY=$(jq -r '.result // empty' "${{ steps.agent.outputs.execution_file }}")
+          REPLY=$(jq -r '[.[] | select(.type=="result") | .result] | last // empty' "${{ steps.agent.outputs.execution_file }}")
           if [ -n "$REPLY" ] && [ "$REPLY" != "SKIP" ]; then
             printf '%s\n' "$REPLY" | gh issue comment "${{ steps.check_skip.outputs.target_number }}" -R "${{ github.repository }}" --body-file -
             echo posted
